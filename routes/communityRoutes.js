@@ -76,7 +76,48 @@ router.get('/community', async (req,res) => {
     }
 })
 
+router.get('/community/me/owner', async (req,res) => {
+    try {
+        const perPage = 10;
+        const page = parseInt(req.query.page) || 1;
 
+        const userId = req.user.userId;
+
+        const skip = (page - 1) * perPage;
+
+        const totalCommunities = await prisma.community.count({
+            where: {
+                owner: userId
+            }
+        })
+
+        const totalPages = Math.ceil(totalCommunities / perPage);
+        
+        const communities = await prisma.community.findMany({
+            where: {
+                owner: userId
+            },
+            skip,
+            take: perPage
+        })
+
+        res.json({
+            status: true,
+            content: {
+                data: communities,
+                meta: {
+                    total: totalCommunities,
+                    pages: totalPages,
+                    page: page
+                }
+            }
+        })
+    } catch (error) {
+        console.log('Error fetching communities:', error);
+        res.status(500).json({ status: false, error: 'Failed to fetch owned communities' });
+    }
+    
+})
 
 
 module.exports = router;

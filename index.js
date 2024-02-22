@@ -4,6 +4,7 @@ require('dotenv').config();
 const roleRoutes = require('./routes/roleRoutes');
 const userRoutes = require('./routes/userRoutes');
 const communityRoutes = require('./routes/communityRoutes');
+const memberRoutes = require('./routes/memberRoutes');
 
 const prisma = new PrismaClient();
 const app = express();
@@ -14,7 +15,7 @@ app.use(express.json());
 app.use('/v1', roleRoutes);
 app.use('/v1', userRoutes);
 app.use('/v1', communityRoutes);
-// app.use('/v1', memberRoutes);
+app.use('/v1', memberRoutes);
 
 app.listen(PORT, async () => {
   try {
