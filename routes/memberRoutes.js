@@ -72,14 +72,15 @@ router.delete('/member/:id', async (req,res) => {
             },
           });
 
+          console.log("deletedMember")
+            console.log(deletedMember)
+
           return res.status(200).json({ status: true });
         
     } catch (error) {
         console.log('Error deleting member:', error);
         res.status(500).json({ status: false, error: 'Failed to remove member' });
-    }
-
-    
+    } 
 })
 
 module.exports = router;
